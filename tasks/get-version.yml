@@ -1,0 +1,12 @@
+---
+
+- name: Get the version information of the latest release of Go
+  uri:
+    url: "{{ go_version_url }}"
+    return_content: true
+    body_format: raw
+  register: go_get_latest_version
+
+- name: Ensure the go_version variable is set
+  set_fact:
+    go_version: "{{ go_get_latest_version.content | regex_replace('^go', '') }}"

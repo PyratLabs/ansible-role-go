@@ -1,0 +1,38 @@
+---
+
+- name: Check where bash is installed
+  command: which bash
+  register: go_check_bash_path
+  failed_when: false
+  changed_when: false
+
+- name: Check that git is installed
+  command: which git
+  register: go_check_git_installed
+  failed_when: false
+  changed_when: false
+
+- name: Fail play if git is not installed
+  fail:
+    msg: git was not found and is required for downloading projects, please ensure this is installed.
+  when: go_check_git_installed.rc > 0
+        and go_projects_dir is defined
+        and go_projects_dir
+        and go_projects is defined
+        and go_projects | length > 0
+        and not go_install_os_dependencies
+
+- name: Check for existing Go binary
+  stat:
+    path: "{{ go_install_dir }}/go/bin/go"
+  register: go_check_existing
+
+- name: Check Go binary version if binary already exists
+  shell: >
+    set -o pipefail && \
+      {{ go_install_dir }}/go/bin/go version | awk '{ print $3 }' | sed 's/^go//'
+  args:
+    executable: "{{ go_check_bash_path.stdout_lines[0] }}"
+  changed_when: false
+  register: go_check_existing_version
+  when: go_check_existing.stat.exists

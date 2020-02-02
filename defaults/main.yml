@@ -1,0 +1,19 @@
+---
+
+# Use a specific version of Go, eg. `1.13.7`. Specify `false` for latest.
+go_version: false
+
+# Allow role to install OS dependencies.
+go_install_os_dependencies: false
+
+# Installation directory for Go.
+go_install_dir: "{{ ansible_user_dir }}/bin"
+
+# Directory to put Go projects. Specify `false` to skip.
+go_projects_dir: "{{ ansible_user_dir }}/go"
+
+# Configure environment variables in user's .bashrc
+go_configure_goenv: true
+
+# List of Go projects to be cloned with `git`. See notes in README.md
+# go_projects: []

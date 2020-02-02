@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    go_install_os_dependencies: true
+    go_install_dir: /usr/local/bin
+    go_projects_dir: /opt/go/projects
+    go_configure_goenv: false
+    go_projects:
+      - name: gin
+        repo: https://github.com/gin-gonic/gin
+  roles:
+    - role: xanmanning.go

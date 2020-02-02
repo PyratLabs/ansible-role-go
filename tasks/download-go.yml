@@ -1,0 +1,16 @@
+---
+
+- name: Ensure the go_arch fact is set
+  set_fact:
+    go_arch: "{{ go_arch_lookup[ansible_architecture].arch }}"
+  when: go_arch is not defined
+
+- name: Get the archive path for go
+  set_fact:
+    go_archive_path: "go{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+
+- name: Ensure go archive is downloaded
+  get_url:
+    url: "{{ go_release_baseurl }}/{{ go_archive_path }}"
+    dest: "/tmp/go_{{ go_version }}.tar.gz"
+    mode: 0600

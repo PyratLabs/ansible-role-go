@@ -1,0 +1,36 @@
+---
+
+- name: Check the state of the new Go directory
+  stat:
+    path: "{{ go_install_dir }}/go"
+  register: go_check_directory
+
+- name: Check the state of the new Go package
+  stat:
+    path: "{{ go_install_dir }}/go/bin/go"
+  register: go_check_installed
+
+- name: Fail play if Go is not installed as expected
+  assert:
+    that:
+      - go_check_installed.stat.exists
+      - go_check_directory.stat.islnk
+    fail_msg: go was not installed as expected, it is likely something went wrong.
+    success_msg: go has been installed as expected.
+
+- name: Check the Go binary version matches the expected version
+  shell: >
+    set -o pipefail && \
+      {{ go_install_dir }}/go/bin/go version | awk '{ print $3 }' | sed 's/^go//'
+  args:
+    executable: "{{ go_check_bash_path.stdout_lines[0] }}"
+  changed_when: false
+  failed_when: false
+  register: go_check_installed_version
+
+- name: Fail play if Go is not the expected version
+  assert:
+    that:
+      - go_check_installed_version.stdout_lines[0] == go_version
+    fail_msg: Installed go version is not as expected, it is likely something went wrong.
+    success_msg: Installed go version is as expected.

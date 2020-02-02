@@ -1,0 +1,24 @@
+---
+
+go_arch_lookup:
+  x86:
+    arch: 386
+  amd64:
+    arch: amd64
+  x86_64:
+    arch: amd64
+  arm64:
+    arch: arm64
+  aarch64:
+    arch: arm64
+  arm:
+    arch: arm6l
+  arm7:
+    arch: arm6l
+  armv7l:
+    arch: arm6l
+  armhf:
+    arch: arm6l
+
+go_release_baseurl: https://dl.google.com/go
+go_version_url: https://golang.org/VERSION?m=text

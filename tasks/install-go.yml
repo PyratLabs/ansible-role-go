@@ -1,0 +1,50 @@
+---
+
+- name: Ensure go_install_dir exists
+  file:
+    path: "{{ go_install_dir }}"
+    state: directory
+
+- name: Ensure go_projects_dir exists
+  file:
+    path: "{{ go_projects_dir }}"
+    state: directory
+  when: go_projects_dir is defined and go_projects_dir
+
+- name: Ensure existing go package is moved to keep an copy of the old version
+  command: >
+      mv {{ go_install_dir }}/go
+      {{ go_install_dir }}/go-{{ go_check_existing_version.stdout_lines[0] }}
+  when:
+    go_check_existing.stat.islnk is defined
+    and not go_check_existing.stat.islnk
+    and go_check_existing_version.stdout_lines[0] != go_version
+
+- name: Ensure go archive is extracted to installation directory
+  unarchive:
+    src: "/tmp/go_{{ go_version }}.tar.gz"
+    dest: "{{ go_install_dir }}"
+    remote_src: true
+    mode: 0755
+  when: not go_check_existing.stat.exists
+        or (go_check_existing.stat.exists
+            and go_check_existing_version.stdout_lines[0] != go_version)
+
+- name: Check that the archive has been extracted correctly
+  stat:
+    path: "{{ go_install_dir }}/go"
+  register: go_check_extracted
+
+- name: Ensure go binary is moved to be identifiable by version
+  command: >
+    mv {{ go_install_dir }}/go
+    {{ go_install_dir }}/go-{{ go_version }}
+  when:
+    go_check_extracted.stat.islnk is defined
+    and not go_check_extracted.stat.islnk
+
+- name: Ensure go package is symlinked
+  file:
+    src: "{{ go_install_dir }}/go-{{ go_version }}"
+    dest: "{{ go_install_dir }}/go"
+    state: link

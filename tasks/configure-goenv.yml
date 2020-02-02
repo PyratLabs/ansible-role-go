@@ -1,0 +1,15 @@
+---
+
+- name: Ensure .bash_goenv file exists and is configured
+  blockinfile:
+    path: "{{ ansible_user_dir }}/.bash_goenv"
+    block: |
+      export PATH="${PATH}:{{ go_install_dir }}/go/bin"
+      export PATH="${PATH}:$(go env GOPATH)/bin"
+      export GOPATH="$(go env GOPATH)"
+    create: true
+
+- name: Ensure .bash_goenv is linked in .bashrc
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    line: "source {{ ansible_user_dir }}/.bash_goenv"
