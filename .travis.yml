@@ -43,7 +43,7 @@ install:
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv ansible-role-terraform-controller xanmanning.$ROLE_NAME
+  - mv ansible-role-$ROLE_NAME xanmanning.$ROLE_NAME
   - cd xanmanning.$ROLE_NAME
 
 script:
