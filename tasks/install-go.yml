@@ -4,11 +4,13 @@
   file:
     path: "{{ go_install_dir }}"
     state: directory
+    mode: 0755
 
 - name: Ensure go_projects_dir exists
   file:
     path: "{{ go_projects_dir }}"
     state: directory
+    mode: 0755
   when: go_projects_dir is defined and go_projects_dir
 
 - name: Ensure existing go package is moved to keep an copy of the old version

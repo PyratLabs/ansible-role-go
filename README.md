@@ -87,4 +87,4 @@ go_projects:
 
 ## Author Information
 
-[Xan Manning](https://xanmanning.co.uk/)
+[Xan Manning](https://xan.manning.io/)

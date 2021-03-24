@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   role_name: go
+  namespace: xanmanning
   author: Xan Manning
   description: Ansible Role to install golang
   company: Pyrat Ltd.
