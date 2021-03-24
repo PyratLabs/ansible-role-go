@@ -5,6 +5,7 @@ galaxy_info:
   author: Xan Manning
   description: Ansible Role to install golang
   company: Pyrat Ltd.
+  github_branch: main
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
