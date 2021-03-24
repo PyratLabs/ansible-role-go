@@ -2,7 +2,7 @@
 
 Ansible role for installing [Go](https://golang.org/).
 
-[![Build Status](https://www.travis-ci.org/PyratLabs/ansible-role-go.svg?branch=master)](https://www.travis-ci.org/PyratLabs/ansible-role-go)
+[![CI](https://github.com/PyratLabs/ansible-role-go/actions/workflows/ci.yml/badge.svg)](https://github.com/PyratLabs/ansible-role-go/actions/workflows/ci.yml)
 
 ## Requirements
 
