@@ -15,12 +15,13 @@
 - name: Fail play if git is not installed
   fail:
     msg: git was not found and is required for downloading projects, please ensure this is installed.
-  when: go_check_git_installed.rc > 0
-        and go_projects_dir is defined
-        and go_projects_dir
-        and go_projects is defined
-        and go_projects | length > 0
-        and not go_install_os_dependencies
+  when:
+    - go_check_git_installed.rc > 0
+    - go_projects_dir is defined
+    - go_projects_dir
+    - go_projects is defined
+    - go_projects | length > 0
+    - not go_install_os_dependencies
 
 - name: Check for existing Go binary
   stat:
@@ -28,9 +29,9 @@
   register: go_check_existing
 
 - name: Check Go binary version if binary already exists
-  shell: >
-    set -o pipefail && \
-      {{ go_install_dir }}/go/bin/go version | awk '{ print $3 }' | sed 's/^go//'
+  shell: |
+    set -o pipefail
+    {{ go_install_dir }}/go/bin/go version | awk '{ print $3 }' | sed 's/^go//'
   args:
     executable: "{{ go_check_bash_path.stdout_lines[0] }}"
   changed_when: false

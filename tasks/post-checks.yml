@@ -19,9 +19,9 @@
     success_msg: go has been installed as expected.
 
 - name: Check the Go binary version matches the expected version
-  shell: >
-    set -o pipefail && \
-      {{ go_install_dir }}/go/bin/go version | awk '{ print $3 }' | sed 's/^go//'
+  shell: |
+    set -o pipefail
+    {{ go_install_dir }}/go/bin/go version | awk '{ print $3 }' | sed 's/^go//'
   args:
     executable: "{{ go_check_bash_path.stdout_lines[0] }}"
   changed_when: false

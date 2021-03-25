@@ -20,5 +20,6 @@ go_arch_lookup:
   armhf:
     arch: arm6l
 
+go_arch: "{{ go_arch_lookup[ansible_architecture].arch }}"
 go_release_baseurl: https://dl.google.com/go
 go_version_url: https://golang.org/VERSION?m=text

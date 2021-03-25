@@ -11,16 +11,18 @@
     path: "{{ go_projects_dir }}"
     state: directory
     mode: 0755
-  when: go_projects_dir is defined and go_projects_dir
+  when:
+    - go_projects_dir is defined
+    - go_projects_dir
 
 - name: Ensure existing go package is moved to keep an copy of the old version
   command: >
       mv {{ go_install_dir }}/go
       {{ go_install_dir }}/go-{{ go_check_existing_version.stdout_lines[0] }}
   when:
-    go_check_existing.stat.islnk is defined
-    and not go_check_existing.stat.islnk
-    and go_check_existing_version.stdout_lines[0] != go_version
+    - go_check_existing.stat.islnk is defined
+    - not go_check_existing.stat.islnk
+    - go_check_existing_version.stdout_lines[0] != go_version
 
 - name: Ensure go archive is extracted to installation directory
   unarchive:
@@ -42,8 +44,8 @@
     mv {{ go_install_dir }}/go
     {{ go_install_dir }}/go-{{ go_version }}
   when:
-    go_check_extracted.stat.islnk is defined
-    and not go_check_extracted.stat.islnk
+    - go_check_extracted.stat.islnk is defined
+    - not go_check_extracted.stat.islnk
 
 - name: Ensure go package is symlinked
   file:

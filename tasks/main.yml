@@ -3,8 +3,9 @@
 - import_tasks: pre-checks.yml
 
 - include_tasks: "{{ ansible_os_family | lower }}/install-os-dependencies.yml"
-  when: go_install_os_dependencies is defined
-        and go_install_os_dependencies
+  when:
+    - go_install_os_dependencies is defined
+    - go_install_os_dependencies
 
 - import_tasks: get-version.yml
   when: go_version is not defined or not go_version
@@ -14,10 +15,13 @@
 - import_tasks: install-go.yml
 
 - import_tasks: configure-goenv.yml
-  when: go_configure_goenv is defined and go_configure_goenv
+  when:
+    - go_configure_goenv is defined
+    - go_configure_goenv
 
 - import_tasks: download-projects.yml
-  when: go_projects is defined
-        and go_projects | length >= 1
+  when:
+    - go_projects is defined
+    - go_projects | length >= 1
 
 - import_tasks: post-checks.yml
